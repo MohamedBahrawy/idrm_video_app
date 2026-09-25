@@ -1,0 +1,48 @@
+name: idrm_video_app
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.5+5
+
+environment:
+  sdk: ^3.10.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+ 
+  syncfusion_flutter_pdfviewer: ^28.1.37
+  flutter_secure_storage: ^9.0.0
+  uuid: ^4.5.0
+  cupertino_icons: ^1.0.8
+  video_player: ^2.10.1
+  encrypt: ^5.0.3
+  path_provider: ^2.1.5
+  file_picker: ^10.3.7
+  screen_protector: ^1.2.2
+  device_info_plus: ^10.0.0
+  http: ^1.2.0
+  pointycastle: ^3.7.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: "^0.14.1"
+  change_app_package_name: ^1.5.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/icon_1024.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icons/icon.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/logo2.png
+    
