@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'auth_service.dart';
 import 'custom_appbar.dart';
@@ -37,7 +38,7 @@ class _MyCoursesPageState extends State<MyCoursesPage> {
           : courses.isEmpty
           ? const Center(
               child: Text(
-                "لا يوجد كورسات مرتبطة بهذا الجهاز",
+                "No courses are linked to this device",
                 style: TextStyle(fontSize: 16),
               ),
             )
@@ -47,7 +48,7 @@ class _MyCoursesPageState extends State<MyCoursesPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "كورساتي",
+                    "My Courses",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 10),
@@ -85,7 +86,7 @@ class _MyCoursesPageState extends State<MyCoursesPage> {
                               color: Colors.blueAccent,
                             ),
                             onTap: () {
-                              // لاحقاً: فتح قائمة فيديوهات الكورس
+                              // Later: Open the course video list
                             },
                           ),
                         );
@@ -98,3 +99,4 @@ class _MyCoursesPageState extends State<MyCoursesPage> {
     );
   }
 }
+
