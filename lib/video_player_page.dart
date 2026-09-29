@@ -18,7 +18,7 @@ class SecureVideoPage extends StatefulWidget {
 }
 
 class _SecureVideoPageState extends State<SecureVideoPage> {
-  String? status = "اختر فيديو مشفر للبدء";
+  String? status = "Select an encrypted video to start";
 
   Future<void> pickAndDecrypt() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -41,7 +41,7 @@ class _SecureVideoPageState extends State<SecureVideoPage> {
     final bool isAesFile =
         !isPdf && nameWithoutExt.toLowerCase().endsWith('_e');
 
-    setState(() => status = "📥 جاري قراءة الملف...");
+    setState(() => status = "📥 Reading file...");
 
     final String deviceSerial = await AuthService.getDeviceSerial();
 
@@ -50,14 +50,14 @@ class _SecureVideoPageState extends State<SecureVideoPage> {
 
     try {
       if (isPdf) {
-        setState(() => status = "🔐 جاري فك التشفير (PDF )... 0٪");
+        setState(() => status = "🔐 Decrypting PDF... 0%");
 
         final manualResult = await decryptManualFromFile(
           file.path,
           onProgress: (progress) {
             final percent = (progress * 100).clamp(0, 100).toStringAsFixed(0);
             setState(() {
-              status = "🔐 جاري فك التشفير (PDF )... $percent٪";
+              status = "🔐 Decrypting PDF... $percent%";
             });
           },
         );
@@ -65,14 +65,14 @@ class _SecureVideoPageState extends State<SecureVideoPage> {
         courseId = manualResult.courseId;
         outputFile = manualResult.outputFile;
       } else if (isAesFile) {
-        setState(() => status = "🔐 جاري فك التشفير (AS)... 0٪");
+        setState(() => status = "🔐 Decrypting (AS)... 0%");
 
         final aesResult = await AesDecryptService.decryptFileToTemp(
           file,
           onProgress: (progress) {
             final percent = (progress * 100).clamp(0, 100).toStringAsFixed(0);
             setState(() {
-              status = "🔐 جاري فك التشفير (AS)... $percent٪";
+              status = "🔐 Decrypting (AS)... $percent%";
             });
           },
         );
@@ -80,14 +80,14 @@ class _SecureVideoPageState extends State<SecureVideoPage> {
         courseId = aesResult.courseId;
         outputFile = aesResult.outputFile;
       } else {
-        setState(() => status = "🔐 جاري فك التشفير (HD)... 0٪");
+        setState(() => status = "🔐 Decrypting (HD)... 0%");
 
         final manualResult = await decryptManualFromFile(
           file.path,
           onProgress: (progress) {
             final percent = (progress * 100).clamp(0, 100).toStringAsFixed(0);
             setState(() {
-              status = "🔐 جاري فك التشفير (HD)... $percent٪";
+              status = "🔐 Decrypting (HD)... $percent%";
             });
           },
         );
@@ -97,19 +97,19 @@ class _SecureVideoPageState extends State<SecureVideoPage> {
       }
     } catch (e) {
       setState(() {
-        status = "❌ حدث خطأ أثناء فك التشفير: $e";
+        status = "❌ Error while decrypting: $e";
       });
       return;
     }
 
     if (!await outputFile.exists()) {
       setState(() {
-        status = "❌ لم يتم إنشاء ملف بعد فك التشفير";
+        status = "❌ No file was created after decryption";
       });
       return;
     }
 
-    // ✅ التحقق من صلاحية الموبايل لنفس الـ courseId
+    // ✅ Check mobile authorization for the same courseId
     final resultCheck = await AuthService.checkMobileAccess(
       deviceSerial: deviceSerial,
       courseId: courseId,
@@ -121,32 +121,32 @@ class _SecureVideoPageState extends State<SecureVideoPage> {
     if (!allowed) {
       switch (reason) {
         case "UserNotAllowed":
-          status = "❌ لا يوجد اشتراك لهذا الكورس على جهازك";
+          status = "❌ You do not have access to this course on your device";
           break;
         case "UserExpired":
-          status = "❌ انتهت صلاحية اشتراكك في هذا الكورس";
+          status = "❌ Your subscription to this course has expired";
           break;
         case "TeacherMobileNotPurchased":
-          status = "❌ المحاضر غير مشترك في نسخة الموبايل";
+          status = "❌ The instructor is not subscribed to the mobile version";
           break;
         case "TeacherMobileExpired":
-          status = "❌ اشتراك المحاضر في نسخة الموبايل منتهي";
+          status = "❌ The instructor's mobile subscription has expired";
           break;
         case "CourseNotFound":
-          status = "❌ الكورس غير موجود";
+          status = "❌ Course not found";
           break;
         case "UserNotFound":
-          status = "❌ لم يتم التفعيل بعد";
+          status = "❌ Activation has not been completed yet";
           break;
         default:
-          status = "❌ لا يمكن فتح هذا الملف – خطأ غير معروف ($reason)";
+          status = "❌ Cannot open this file - Unknown error ($reason)";
       }
 
       setState(() {});
       return;
     }
 
-    setState(() => status = "✔ لديك صلاحية — جاري فتح الملف...");
+    setState(() => status = "✔ Access granted — Opening file...");
 
     if (!mounted) return;
 
@@ -156,7 +156,7 @@ class _SecureVideoPageState extends State<SecureVideoPage> {
         MaterialPageRoute(builder: (_) => PdfViewerPage(pdfFile: outputFile!)),
       );
     } else {
-      // ✅ هنا التعديل المهم: نبعت courseId
+      // ✅ Important: pass courseId
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -184,7 +184,7 @@ class _SecureVideoPageState extends State<SecureVideoPage> {
             ),
             const SizedBox(height: 20),
             const Text(
-              "تشغيل فيديو مشفر",
+              "Play Encrypted Video",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 20),
@@ -212,7 +212,7 @@ class _SecureVideoPageState extends State<SecureVideoPage> {
                 color: Colors.white,
               ),
               label: const Text(
-                "اختر الفيديو المشفر",
+                "Select Encrypted Video",
                 style: TextStyle(fontSize: 18, color: Colors.white),
               ),
               style: ElevatedButton.styleFrom(

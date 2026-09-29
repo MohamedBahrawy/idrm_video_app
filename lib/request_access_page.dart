@@ -45,115 +45,114 @@ class _RequestAccessPageState extends State<RequestAccessPage> {
 
     setState(() => isLoading = false);
 
-    String msg;
-    switch (result) {
-      case "SUCCESS":
-        msg = "تم إرسال الطلب بنجاح ✔";
-        break;
-      case "ALREADY_EXISTS":
-        msg = "تم تسجيل البيانات من قبل";
-        break;
-      case "INVALID_COURSE":
-        msg = "كود الكورس يجب أن يكون رقمًا صحيحًا";
-        break;
-      case "SERVER_ERROR":
-        msg = "مشكلة فى السيرفر";
-        break;
-      default:
-        msg = "حدث خطأ أثناء الإرسال";
-        break;
-    }
+  String msg;
+switch (result) {
+  case "SUCCESS":
+    msg = "Request sent successfully ✔";
+    break;
+  case "ALREADY_EXISTS":
+    msg = "The data has already been registered";
+    break;
+  case "INVALID_COURSE":
+    msg = "Course code must be a valid number";
+    break;
+  case "SERVER_ERROR":
+    msg = "Server error";
+    break;
+  default:
+    msg = "An error occurred while sending the request";
+    break;
+}
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      backgroundColor: Colors.grey.shade100,
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "طلب اشتراك للكورس",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 20),
-                _buildField(
-                  label: "Course Code",
-                  controller: courseCode,
-                  validator: (v) {
-                    if (v == null || v.isEmpty) {
-                      return "أدخل كود الكورس";
-                    }
-                    if (int.tryParse(v) == null) {
-                      return "كود الكورس يجب أن يكون رقمًا";
-                    }
-                    return null;
-                  },
-                ),
-                _buildField(
-                  label: "Student Name",
-                  controller: realName,
-                  validator: (v) {
-                    if (v == null || v.trim().length <= 5) {
-                      return "الاسم يجب أن يكون أكبر من 5 حروف";
-                    }
-                    return null;
-                  },
-                ),
-                _buildField(
-                  label: "Student Mobile",
-                  controller: mobile,
-                  validator: (v) {
-                    if (v == null || v.trim().length < 10) {
-                      return "رقم الموبايل ١٠ أرقام على الأقل";
-                    }
-                    if (!RegExp(r'^\d+$').hasMatch(v.trim())) {
-                      return "الموبايل أرقام فقط";
-                    }
-                    return null;
-                  },
-                ),
-                _buildField(
-                  label: "User Serial",
-                  controller: userSerial,
-                  readOnly: true,
-                  validator: null,
-                ),
-                const SizedBox(height: 25),
-                Center(
-                  child: isLoading
-                      ? const CircularProgressIndicator()
-                      : ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(double.infinity, 50),
-                            backgroundColor: Colors.blueAccent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          onPressed: _sendRequest,
-                          child: const Text(
-                            "Send Request",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: const CustomAppBar(),
+    backgroundColor: Colors.grey.shade100,
+    body: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Send Course Request",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+              ),
+              const SizedBox(height: 20),
+              _buildField(
+                label: "Course Code",
+                controller: courseCode,
+                validator: (v) {
+                  if (v == null || v.isEmpty) {
+                    return "Enter course code";
+                  }
+                  if (int.tryParse(v) == null) {
+                    return "Course code must be a number";
+                  }
+                  return null;
+                },
+              ),
+              _buildField(
+                label: "Student Name",
+                controller: realName,
+                validator: (v) {
+                  if (v == null || v.trim().length <= 5) {
+                    return "Name must be longer than 5 characters";
+                  }
+                  return null;
+                },
+              ),
+              _buildField(
+                label: "Student Mobile",
+                controller: mobile,
+                validator: (v) {
+                  if (v == null || v.trim().length < 10) {
+                    return "Mobile number must be at least 10 digits";
+                  }
+                  if (!RegExp(r'^\d+$').hasMatch(v.trim())) {
+                    return "Mobile number must contain digits only";
+                  }
+                  return null;
+                },
+              ),
+              _buildField(
+                label: "User Serial",
+                controller: userSerial,
+                readOnly: true,
+                validator: null,
+              ),
+              const SizedBox(height: 25),
+              Center(
+                child: isLoading
+                    ? const CircularProgressIndicator()
+                    : ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 50),
+                          backgroundColor: Colors.blueAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                ),
-              ],
-            ),
+                        onPressed: _sendRequest,
+                        child: const Text(
+                          "Send Request",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                      ),
+              ),
+            ],
           ),
         ),
       ),
-    );
-  }
-
+    ),
+  );
+}
   Widget _buildField({
     required String label,
     required TextEditingController controller,

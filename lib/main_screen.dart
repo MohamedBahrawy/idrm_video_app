@@ -36,7 +36,6 @@ class MainScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 40),
-
               // ===== زر تشغيل الفيديو =====
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -53,7 +52,7 @@ class MainScreen extends StatelessWidget {
                   );
                 },
                 child: const Text(
-                  "تشغيل الفيديو",
+                  "Play Video",
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ),
@@ -75,10 +74,10 @@ class MainScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const MyCoursesPage()),
                   );
                 },
-                child: const Text(
-                  "كورساتي",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
+               child: const Text(
+              "My Courses",
+              style: TextStyle(fontSize: 18, color: Colors.white),
+            ),
               ),
 
               const SizedBox(height: 14),
@@ -101,7 +100,7 @@ class MainScreen extends StatelessWidget {
                   );
                 },
                 child: const Text(
-                  "طلب اشتراك للكورس",
+                  "Send Course Request",
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),

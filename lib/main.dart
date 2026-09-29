@@ -44,8 +44,8 @@ class BlockedApp extends StatelessWidget {
             children: const [
               Icon(Icons.error, size: 80, color: Colors.red),
               SizedBox(height: 20),
-              Text(
-                "❌ لا يمكن فتح هذا الإصدار\nالرجاء تحديث التطبيق",
+             Text(
+                "❌ This version cannot be opened\nPlease update the app",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
